@@ -5,17 +5,18 @@ import { Accelerometer } from 'expo-sensors';
 
 const { width: W, height: H } = Dimensions.get('window');
 
-const GRAVITY = 0.6;
-const JUMP_FORCE = -12;
 const PLATFORM_W = 70;
 const PLATFORM_H = 15;
-const PLAYER_SIZE = 40;
 
 const DEFAULT_CONFIG = {
   backgroundColor: '#1E1E2E',
   platformColor: '#A6E3A1',
   characterEmoji: '👽',
   platformSpeed: 0,
+  platformWidth: 70, // Added dynamic platform width
+  jumpForce: -13,
+  gravity: 0.6,
+  playerSize: 40,
 };
 
 export default function App() {
@@ -27,7 +28,7 @@ export default function App() {
   const [renderTicks, setRenderTicks] = useState(0);
 
   const physicsRef = useRef({
-    player: { x: W / 2 - PLAYER_SIZE / 2, y: H / 2, vx: 0, vy: 0 },
+    player: { x: W / 2 - DEFAULT_CONFIG.playerSize / 2, y: H / 2, vx: 0, vy: 0 },
     platforms: [],
     cameraY: 0,
     score: 0,
@@ -80,22 +81,22 @@ export default function App() {
     for (let i = 0; i < 15; i++) {
       platforms.push({
         id: Math.random(),
-        x: Math.random() * (W - PLATFORM_W),
+        x: Math.random() * (W - config.platformWidth),
         y: H - i * (H / 10),
-        w: PLATFORM_W,
+        w: config.platformWidth,
         h: PLATFORM_H,
         dir: Math.random() > 0.5 ? 1 : -1,
       });
     }
     // ensure one directly under player initially
-    platforms[0].x = W / 2 - PLATFORM_W / 2;
+    platforms[0].x = W / 2 - config.platformWidth / 2;
     platforms[0].y = H / 2 + 100;
     return platforms;
   };
 
   const startGame = () => {
     physicsRef.current = {
-      player: { x: W / 2 - PLAYER_SIZE / 2, y: H / 2, vx: 0, vy: 0 },
+      player: { x: W / 2 - config.playerSize / 2, y: H / 2, vx: 0, vy: 0 },
       platforms: generateInitialPlatforms(),
       cameraY: 0,
       score: 0,
@@ -104,6 +105,14 @@ export default function App() {
     setScore(0);
     setScreen('GAME');
   };
+
+  useEffect(() => {
+    if (physicsRef.current.platforms) {
+      for (let p of physicsRef.current.platforms) {
+        p.w = config.platformWidth;
+      }
+    }
+  }, [config.platformWidth]);
 
   const gameOver = async (finalScore) => {
     finalScore = Math.floor(finalScore);
@@ -126,13 +135,13 @@ export default function App() {
       if (state.isGameOver) return;
 
       // Gravity
-      state.player.vy += GRAVITY;
+      state.player.vy += config.gravity;
       state.player.y += state.player.vy;
       state.player.x += state.player.vx;
 
       // Wrap horizontally
-      if (state.player.x > W) state.player.x = -PLAYER_SIZE;
-      if (state.player.x < -PLAYER_SIZE) state.player.x = W;
+      if (state.player.x > W) state.player.x = -config.playerSize;
+      if (state.player.x < -config.playerSize) state.player.x = W;
 
       // Moving platforms logic
       if (config.platformSpeed > 0) {
@@ -145,13 +154,13 @@ export default function App() {
 
       // Collisions with platforms (only when falling)
       if (state.player.vy > 0) {
-        const footY = state.player.y + PLAYER_SIZE;
+        const footY = state.player.y + config.playerSize;
         const footYPrev = footY - state.player.vy;
 
         for (let p of state.platforms) {
           if (footY >= p.y && footYPrev <= p.y + p.h) {
-            if (state.player.x + PLAYER_SIZE > p.x && state.player.x < p.x + p.w) {
-              state.player.vy = JUMP_FORCE; // bounce
+            if (state.player.x + config.playerSize > p.x && state.player.x < p.x + p.w) {
+              state.player.vy = config.jumpForce; // bounce
               break; 
             }
           }
@@ -179,9 +188,9 @@ export default function App() {
         const newY = highestY - (Math.random() * 60 + 50);
         state.platforms.push({
           id: Math.random(),
-          x: Math.random() * (W - PLATFORM_W),
+          x: Math.random() * (W - config.platformWidth),
           y: newY,
-          w: PLATFORM_W,
+          w: config.platformWidth,
           h: PLATFORM_H,
           dir: Math.random() > 0.5 ? 1 : -1,
         });
@@ -189,7 +198,7 @@ export default function App() {
       }
 
       // Fall below screen = Game Over
-      if (state.player.y > H + PLAYER_SIZE) {
+      if (state.player.y > H + config.playerSize) {
         state.isGameOver = true;
       }
 
@@ -206,7 +215,7 @@ export default function App() {
     return () => cancelAnimationFrame(frameRef.current);
   }, [screen, config]);
 
-  const handleAICommand = () => {
+  const handleAICommand = async () => {
     if (!chatInput.trim()) return;
     const txt = chatInput.toLowerCase();
     
@@ -216,7 +225,32 @@ export default function App() {
     let newConf = { ...config };
     let changed = false;
 
-    // Simulate calling Google Stitch MCP or AI API
+    try {
+      // 1. Send the command to local Stitch MCP Engine (Node.js backend)
+      const res = await fetch('http://localhost:3000/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt: txt,
+          currentConfig: config
+        })
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        // data matches exactly our json requirement thanks to Gemini
+        setConfig({ ...config, ...data });
+        return; // Success, done!
+      } else {
+        console.warn("MCP API returned error, falling back to mock logic...");
+      }
+    } catch (e) {
+      console.warn("Connection to Stitch MCP failed (is backend running?). Falling back to mock logic...", e);
+    }
+
+    // 2. Fallback logic if server is offline or missing API key
     if (txt.includes('blue')) { newConf.backgroundColor = '#87CEEB'; changed = true; }
     if (txt.includes('red')) { newConf.backgroundColor = '#FF5555'; changed = true; }
     if (txt.includes('dark')) { newConf.backgroundColor = '#1E1E2E'; changed = true; }
@@ -330,12 +364,12 @@ export default function App() {
           position: 'absolute',
           left: player.x,
           top: player.y,
-          width: PLAYER_SIZE,
-          height: PLAYER_SIZE,
+          width: config.playerSize,
+          height: config.playerSize,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-          <Text style={{ fontSize: PLAYER_SIZE * 0.8 }}>{config.characterEmoji}</Text>
+          <Text style={{ fontSize: config.playerSize * 0.8 }}>{config.characterEmoji}</Text>
         </View>
 
         {/* Score */}

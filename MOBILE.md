@@ -18,9 +18,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Iterations | 1 |
-| Total Weight (kg) | 35 |
-| Total Time (min) | 13 |
+| Total Iterations | 4 |
+| Total Weight (kg) | 60 |
+| Total Time (min) | 25 |
 | Failed Attempts | 0 |
 
 ---
@@ -104,6 +104,31 @@ Use AsyncStorage to save the High Score locally. Every time the game is over, ch
 **Commit:** 
 
 [NAIM: Jumple] Yerel depolama ve önbellek entegrasyonu - 20kg
+
+### 🏋️ Iteration 4
+
+| Field | Value |
+|-------|-------|
+| Feature | `AI feature (chat, summary, etc.)` |
+| Weight | `25 kg` |
+| Tool Used | `Antigravity` |
+| Time | `12 min` |
+| Attempts | `2` |
+| Status | ✅ Success |
+
+**Prompt given to AI:**
+```
+Establish a Model Context Protocol (MCP) server bridge via a Local Node.js backend. Connect the React Native game's chat input directly to the Google Gemini AI. The AI should generate a strict JSON payload mapping to visual and physical aspects. Ensure the game state automatically updates configurations (colors, physical jump force, gravity) the moment a user submits commands in natural language.
+```
+
+**What happened:**
+- Setup a dedicated Node.js Stitch MCP backend utilizing the @google/genai module. The system perfectly parses natural language game modifications (like color, jump force, platform extensions) and pushes live JSON configurations back to the in-game state via React Native's hooks.
+
+**Screenshot:** 
+
+**Commit:** 
+
+[NAIM: Jumple] Yapay zeka tasarımı algılayıcı sunucusu entegre edildi - 25kg
 
 ## 🧠 Reflection (fill at the end)
 
