@@ -18,9 +18,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Iterations | 5 |
-| Total Weight (kg) | 75 |
-| Total Time (min) | 35 |
+| Total Iterations | 6 |
+| Total Weight (kg) | 90 |
+| Total Time (min) | 40 |
 | Failed Attempts | 0 |
 
 ---
@@ -154,6 +154,32 @@ Establish a Model Context Protocol (MCP) server bridge via a Local Node.js backe
 **Commit:** 
 
 [NAIM: Jumple] Çoklu ekran ve profil menüsü eklendi - 15kg
+
+### 🏋️ Iteration 6
+
+| Field | Value |
+|-------|-------|
+| Feature | `API call (fetch/axios)` |
+| Weight | `15 kg` |
+| Tool Used | `Antigravity` |
+| Time | `5 min` |
+| Attempts | `1` |
+| Status | ✅ Success |
+
+**Prompt given to AI:**
+```
+Dış dünyadan bir API isteği atarak ana menüye dinamik bir içerik getir. Oyuncular ana ekrandayken internetten her açılışta rastgele bir "Günün Alıntısı (Quote)" çekilsin ve ekranda yazılsın.
+```
+
+**What happened:**
+- Connected cleanly to `dummyjson.com/quotes/random` via native `fetch()` HTTP protocol. Created a new state to store and display the resulting JSON payload inside the Menu view beautifully.
+
+**Screenshot:** 
+
+**Commit:** 
+
+[NAIM: Jumple] Dış API ile dinamik günün sözü entegre edildi - 15kg
+
 
 ## 🧠 Reflection (fill at the end)
 

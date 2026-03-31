@@ -26,6 +26,7 @@ export default function App() {
   const [config, setConfig] = useState(DEFAULT_CONFIG);
   const [chatInput, setChatInput] = useState('');
   const [renderTicks, setRenderTicks] = useState(0);
+  const [funFact, setFunFact] = useState('Loading tip of the day...');
 
   const physicsRef = useRef({
     player: { x: W / 2 - DEFAULT_CONFIG.playerSize / 2, y: H / 2, vx: 0, vy: 0 },
@@ -41,6 +42,12 @@ export default function App() {
     AsyncStorage.getItem('highscore').then(v => {
       if (v) setHighScore(parseInt(v));
     });
+
+    // API Call (fetch) feature - 15kg
+    fetch('https://dummyjson.com/quotes/random')
+      .then(res => res.json())
+      .then(data => setFunFact(`"${data.quote}"\n— ${data.author}`))
+      .catch(err => setFunFact("Keep jumping to reach the stars!"));
   }, []);
 
   // Accelerometer (Tilt) input or Keyboard (Web)
@@ -295,6 +302,13 @@ export default function App() {
         <TouchableOpacity style={[styles.button, {marginTop: 15, backgroundColor: '#8b5cf6'}]} onPress={() => setScreen('PROFILE')}>
           <Text style={styles.buttonText}>PROFILE</Text>
         </TouchableOpacity>
+        
+        <View style={{ marginTop: 40, paddingHorizontal: 20, alignItems: 'center' }}>
+          <Text style={{ fontSize: 14, color: '#aaa', fontStyle: 'italic', textAlign: 'center' }}>
+            {funFact}
+          </Text>
+        </View>
+
         <Text style={styles.instructions}>Tilt phone or tap screen edges to move</Text>
       </View>
     );
