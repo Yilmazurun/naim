@@ -292,7 +292,34 @@ export default function App() {
         <TouchableOpacity style={styles.button} onPress={startGame}>
           <Text style={styles.buttonText}>PLAY</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, {marginTop: 15, backgroundColor: '#8b5cf6'}]} onPress={() => setScreen('PROFILE')}>
+          <Text style={styles.buttonText}>PROFILE</Text>
+        </TouchableOpacity>
         <Text style={styles.instructions}>Tilt phone or tap screen edges to move</Text>
+      </View>
+    );
+  }
+
+  if (screen === 'PROFILE') {
+    return (
+      <View style={[styles.menuContainer, { backgroundColor: config.backgroundColor }]}>
+        <Text style={[styles.title, { fontSize: 36, color: config.backgroundColor === '#FFFFFF' || config.backgroundColor === '#87CEEB' ? '#000' : '#FFF' }]}>
+          Player Profile
+        </Text>
+        <View style={{ marginVertical: 30, alignItems: 'center' }}>
+          <Text style={[styles.subtitle, { marginBottom: 10, color: config.backgroundColor === '#FFFFFF' || config.backgroundColor === '#87CEEB' ? '#444' : '#CCC' }]}>
+            Highest Altitude: {highScore} km
+          </Text>
+          <Text style={[styles.subtitle, { marginBottom: 10, color: config.backgroundColor === '#FFFFFF' || config.backgroundColor === '#87CEEB' ? '#444' : '#CCC' }]}>
+            Current Avatar: {config.characterEmoji}
+          </Text>
+          <Text style={[styles.subtitle, { marginBottom: 10, color: config.backgroundColor === '#FFFFFF' || config.backgroundColor === '#87CEEB' ? '#444' : '#CCC' }]}>
+            Rank: Doodle Master
+          </Text>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={() => setScreen('MENU')}>
+          <Text style={styles.buttonText}>BACK</Text>
+        </TouchableOpacity>
       </View>
     );
   }

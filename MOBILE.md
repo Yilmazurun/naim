@@ -18,9 +18,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Total Iterations | 4 |
-| Total Weight (kg) | 60 |
-| Total Time (min) | 25 |
+| Total Iterations | 5 |
+| Total Weight (kg) | 75 |
+| Total Time (min) | 35 |
 | Failed Attempts | 0 |
 
 ---
@@ -129,6 +129,31 @@ Establish a Model Context Protocol (MCP) server bridge via a Local Node.js backe
 **Commit:** 
 
 [NAIM: Jumple] Yapay zeka tasarımı algılayıcı sunucusu entegre edildi - 25kg
+
+### 🏋️ Iteration 5
+
+| Field | Value |
+|-------|-------|
+| Feature | `Navigation (multi-screen)` |
+| Weight | `15 kg` |
+| Tool Used | `Antigravity` |
+| Time | `10 min` |
+| Attempts | `1` |
+| Status | ✅ Success |
+
+**Prompt given to AI:**
+```
+şimdi de navigation Feature ekle, mult-screen olsun. mesela profil olsun. orda max skor falan gözükebilir
+```
+
+**What happened:**
+- Implemented multi-screen logic using conditional view rendering in App.js. Created a new 'PROFILE' button on the Main Menu, which navigates to a dedicated Profile screen displaying highest altitude, current avatar selected, and a functional back navigation button.
+
+**Screenshot:** 
+
+**Commit:** 
+
+[NAIM: Jumple] Çoklu ekran ve profil menüsü eklendi - 15kg
 
 ## 🧠 Reflection (fill at the end)
 

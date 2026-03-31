@@ -49,8 +49,9 @@ Markdown etiketi kullanma. Sadece JSON döndür.`;
     const jsonObj = JSON.parse(response.text);
     res.json(jsonObj);
   } catch (error) {
-    console.error('MCP Hatası:', error);
-    res.status(500).json({ error: 'Stitch MCP Error' });
+    console.error('MCP Hatası:', error.message || error);
+    // Sunucuyu çökertmemek için statüs dön
+    res.status(500).json({ error: 'Stitch MCP Error or Quota Exceeded' });
   }
 });
 
