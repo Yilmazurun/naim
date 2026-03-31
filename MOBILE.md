@@ -19,8 +19,8 @@
 | Metric | Value |
 |--------|-------|
 | Total Iterations | 1 |
-| Total Weight (kg) | 5 |
-| Total Time (min) | 3 |
+| Total Weight (kg) | 35 |
+| Total Time (min) | 13 |
 | Failed Attempts | 0 |
 
 ---
@@ -78,6 +78,32 @@ Add a text input bar at the bottom of the game screen so users can write command
 **Commit:** 
 
 [NAIM: Jumple] Metin girişi ve çıktı entegrasyonu - 10kg
+
+
+### 🏋️ Iteration 3
+
+| Field | Value |
+|-------|-------|
+| Feature | `Local storage / cache` |
+| Weight | `20 kg` |
+| Tool Used | `Antigravity` |
+| Time | `5 min` |
+| Attempts | `1` |
+| Status | ✅ Success |
+
+**Prompt given to AI:**
+```
+Use AsyncStorage to save the High Score locally. Every time the game is over, check if the current score is higher than the saved score, and if so, cache it so it persists when the app restarts.
+```
+
+**What happened:**
+- Connected Expo's AsyncStorage. Score comparisons work perfectly and high score data fetches successfully whenever the application starts.
+
+**Screenshot:** 
+
+**Commit:** 
+
+[NAIM: Jumple] Yerel depolama ve önbellek entegrasyonu - 20kg
 
 ## 🧠 Reflection (fill at the end)
 
