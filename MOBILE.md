@@ -54,6 +54,31 @@ Build the basic UI structure for a Doodle Jump clone in React Native using Expo.
 
 [NAIM: Jumple] Arayüz ve oyun alanı tasarlandı - 5kg
 
+### 🏋️ Iteration 2
+
+| Field | Value |
+|-------|-------|
+| Feature | `Text input/output` |
+| Weight | `10 kg` |
+| Tool Used | `Antigravity` |
+| Time | `5 min` |
+| Attempts | `1` |
+| Status | ✅ Success |
+
+**Prompt given to AI:**
+```
+Add a text input bar at the bottom of the game screen so users can write commands. When a command is sent, parse the text to output visual feedback like changing the background color or character emojis in the game.
+```
+
+**What happened:**
+- Added a KeyboardAvoidingView with a TextInput at the bottom. Implemented a function that reads the text input and outputs direct style updates to the game state instantly.
+
+**Screenshot:** 
+
+**Commit:** 
+
+[NAIM: Jumple] Metin girişi ve çıktı entegrasyonu - 10kg
+
 ## 🧠 Reflection (fill at the end)
 
 **Hardest part:**
